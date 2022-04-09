@@ -1,0 +1,6 @@
+tasks:
+  - init: |
+      cd my-react-app
+      yarn install
+    command: |
+      echo 'nothing to start'
