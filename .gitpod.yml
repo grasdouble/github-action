@@ -1,5 +1,6 @@
 tasks:
   - init: |
+      brew install act --HEAD
       cd my-react-app
       yarn install
     command: |
