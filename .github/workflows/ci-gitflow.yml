@@ -43,7 +43,10 @@ jobs:
           exit 1
       - uses: actions/checkout@v3
       - name: Create release from develop to ${{ github.event.inputs.release_branch }}
-        run: echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
+        run: |
+          echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
+          git branch ${{ github.event.inputs.release_branch }}
+          git push origin ${{ github.event.inputs.release_branch }}
   ci-gitflow-merge:
     if: github.event.inputs.action == 'merge'
     runs-on: ubuntu-latest
