@@ -26,10 +26,10 @@ on:
 
 jobs:
   ci-gitflow-nothing:
+    if: github.event.inputs.action == 'nothing'
     runs-on: ubuntu-latest
     steps:
       - name: Do Nothing
-        if: github.event.inputs.action == 'nothing'
         run: echo "Do nothing"
   ci-gitflow-create:
     if: |
