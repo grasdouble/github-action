@@ -26,11 +26,16 @@ on:
 
 jobs:
   ci-gitflow-nothing:
-    if: github.event.inputs.action == 'nothing'
     runs-on: ubuntu-latest
     steps:
       - name: Do Nothing
+        if: github.event.inputs.action == 'nothing'
         run: echo "Do nothing"
+      - name: Create - Missing inputs
+        if: |
+          github.event.inputs.action == 'create' &&
+          github.event.inputs.release_branch == ''
+        run: echo "Release branch is missing"
   ci-gitflow-create:
     if: |
       github.event.inputs.action == 'create' &&
