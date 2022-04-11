@@ -1,0 +1,46 @@
+# This workflow will
+# - do a clean installation of node dependencies,
+# - cache/restore them,
+# - run tests across different versions of node
+
+name: CI - Gitflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Gitflow process to trigger"
+        type: choice
+        default: nothing
+        required: true
+        options:
+          - nothing
+          - create
+          - merge
+          - sync
+
+jobs:
+  ci-gitflow-nothing:
+    if: ${{ github.event.inputs.action == 'nothing' }} 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Do Nothing
+        run: echo "Do nothing"
+  ci-gitflow-create:
+    if: ${{ github.event.inputs.action == 'create' }} 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create release on ...
+        run: echo "Create release on ..."
+  ci-gitflow-merge:
+    if: ${{ github.event.inputs.action == 'merge' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge release on ...
+        run: echo "Merge release on ..."
+  ci-gitflow-sync:
+    if: ${{ github.event.inputs.action == 'sync' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync main with ...
+        run: echo "Sync main with ..."
