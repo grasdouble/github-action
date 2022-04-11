@@ -47,6 +47,7 @@ jobs:
           echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
           git branch ${{ github.event.inputs.release_branch }}
           git push origin ${{ github.event.inputs.release_branch }}
+          git checkout ${{ github.event.inputs.release_branch }}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
