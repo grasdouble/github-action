@@ -55,6 +55,8 @@ jobs:
       - name: Create release from develop to ${{ github.event.inputs.release_branch }}
         run: |
           echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
+          git config --global user.email "you@example.com"
+          git config --global user.name "Robot"
           git branch ${{ github.event.inputs.release_branch }}
           git checkout ${{ github.event.inputs.release_branch }}
           cd my-react-app && npm version ${{ github.event.inputs.scope }}
