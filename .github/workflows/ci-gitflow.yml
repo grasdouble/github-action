@@ -57,7 +57,7 @@ jobs:
           echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
           git branch ${{ github.event.inputs.release_branch }}
           git checkout ${{ github.event.inputs.release_branch }}
-          cd my-react-app && npm version $github.event.inputs.scope
+          cd my-react-app && npm version ${{ github.event.inputs.scope }}
           git commit -m 'Release'
           git push origin ${{ github.event.inputs.release_branch }}
       - name: Create Pull Request
