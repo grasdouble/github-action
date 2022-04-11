@@ -35,7 +35,9 @@ jobs:
         if: |
           github.event.inputs.action == 'create' &&
           github.event.inputs.release_branch == ''
-        run: echo "Release branch is missing"
+        run: |
+          echo "Release branch is missing"
+          exit 1
   ci-gitflow-create:
     if: |
       github.event.inputs.action == 'create' &&
