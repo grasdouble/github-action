@@ -56,19 +56,20 @@ jobs:
         run: |
           echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
           git branch ${{ github.event.inputs.release_branch }}
-          git push origin ${{ github.event.inputs.release_branch }}
           git checkout ${{ github.event.inputs.release_branch }}
+          cd my-react-app && npm version $github.event.inputs.scope
+          git commit -m 'Release'
+          git push origin ${{ github.event.inputs.release_branch }}
       - name: Create Pull Request
-        uses: technote-space/create-pr-action@v2
+        uses: devops-infra/action-pull-request@v0.4.2
         with:
-          EXECUTE_COMMANDS: |
-            cd my-react-app
-            npm version $github.event.inputs.scope
-          COMMIT_MESSAGE: 'test release pr'
-          COMMIT_NAME: 'GitHub Actions'
-          COMMIT_EMAIL: 'example@example.com'
-          PR_BRANCH_NAME: 'wtf-${PR_ID}'
-          PR_TITLE: 'test release pr'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: ${{ github.event.inputs.release_branch }}
+          target_branch: fake-main
+          title: Test - release pull request
+          body: "**Automated pull request**"
+          draft: true
+          get_diff: true
   ci-gitflow-merge:
     if: github.event.inputs.action == 'merge'
     runs-on: ubuntu-latest
