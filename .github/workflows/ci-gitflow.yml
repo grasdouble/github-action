@@ -46,7 +46,7 @@ jobs:
       - name: Merge release on ...
         run: echo "Merge release on ..."
   ci-gitflow-sync:
-    if: github.event.inputs.action == 'sync' }}
+    if: github.event.inputs.action == 'sync'
     runs-on: ubuntu-latest
     steps:
       - name: Sync main with ...
