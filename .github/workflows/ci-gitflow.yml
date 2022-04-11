@@ -52,7 +52,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: ${{ github.event.inputs.release_branch }}
-          branch: main
+          branch: fake-main
+          draft: true
           commit-message: Release ...
           title: '[Example] TITLE Release'
           body: >
