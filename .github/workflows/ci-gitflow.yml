@@ -18,6 +18,11 @@ on:
           - create
           - merge
           - sync
+      release_branch:
+        description: "Branch to create"
+        type: string
+        required: false
+      
 
 jobs:
   ci-gitflow-nothing:
@@ -27,11 +32,13 @@ jobs:
       - name: Do Nothing
         run: echo "Do nothing"
   ci-gitflow-create:
-    if: ${{ github.event.inputs.action == 'create' }} 
+    if: |
+      ${{ github.event.inputs.action == 'create' }} &&
+      ${{ github.event.inputs.release_branch != '' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Create release on ...
-        run: echo "Create release on ..."
+      - name: Create release from develop to ${{ github.event.inputs.release_branch }}
+        run: echo "Create release from develop to ${{ github.event.inputs.release_branch }}"
   ci-gitflow-merge:
     if: ${{ github.event.inputs.action == 'merge' }}
     runs-on: ubuntu-latest
