@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Do Nothing
-        run: echo "Do nothing"
+        run: echo "Do nothing on ${{ github.event.ref }}"
   ci-gitflow-create:
     if: |
       github.event.inputs.action == 'create'
@@ -41,8 +41,9 @@ jobs:
         run: |
           echo "Release branch is missing"
           exit 1
+      - uses: actions/checkout@v3
       - name: Create release from develop to ${{ github.event.inputs.release_branch }}
-        run: echo "Create release from develop to ${{ github.event.inputs.release_branch }}"
+        run: echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
   ci-gitflow-merge:
     if: github.event.inputs.action == 'merge'
     runs-on: ubuntu-latest
