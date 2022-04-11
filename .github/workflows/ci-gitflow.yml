@@ -22,6 +22,16 @@ on:
         description: "Branch to create"
         type: string
         required: false
+      scope:
+        description: "Release scope"
+        type: choice
+        default: nothing
+        required: true
+        options:
+          - nothing
+          - major
+          - patch
+          - minor
       
 
 jobs:
@@ -51,6 +61,9 @@ jobs:
       - name: Create Pull Request
         uses: technote-space/create-pr-action@v2
         with:
+          EXECUTE_COMMANDS: |
+            cd my-react-app
+            npm version $github.event.inputs.scope
           COMMIT_MESSAGE: 'test release pr'
           COMMIT_NAME: 'GitHub Actions'
           COMMIT_EMAIL: 'example@example.com'
