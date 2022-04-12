@@ -80,7 +80,7 @@ jobs:
           git branch release_$(cat release.version)
           git checkout release_$(cat release.version)
           git add package.json
-          git commit -m `Prepare release $(cat release.version)`
+          git commit -m 'Prepare release `cat release.version`'
           git push origin release_$(cat release.version)
 
       - name: Create pull request
