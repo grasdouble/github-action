@@ -18,9 +18,9 @@ on:
           - create
           - merge
           - sync
-      release_branch:
-        description: "Branch to create"
-        type: string
+      confirm_release:
+        description: "Confirm release creation"
+        type: boolean
         required: false
       scope:
         description: "Release scope"
@@ -46,9 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Error - Missing inputs
-        if: github.event.inputs.release_branch == ''
+        if: github.event.inputs.confirm_release == false
         run: |
-          echo "Release branch is missing"
+          echo "Release creation not confirmed"
           exit 1
 
       - name: setup git config
