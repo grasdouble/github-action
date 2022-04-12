@@ -94,6 +94,7 @@ jobs:
             "**Automated pull request**"
             "<!-- Diff files - START -->"
             "<!-- Diff files - END -->"
+            ".."
           draft: false
           get_diff: true
   ci-gitflow-merge:
