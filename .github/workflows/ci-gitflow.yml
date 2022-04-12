@@ -91,10 +91,9 @@ jobs:
           target_branch: fake-main
           title: Test - Release ${{ steps.release.outputs.releaseVersion }}
           body: |
-            "**Automated pull request**"
-            "<!-- Diff files - START -->"
-            "<!-- Diff files - END -->"
-            ".."
+            '**Automated pull request**'
+            '<!-- Diff files - START -->'
+            '<!-- Diff files - END -->'
           draft: false
           get_diff: true
   ci-gitflow-merge:
