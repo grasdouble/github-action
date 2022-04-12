@@ -22,6 +22,7 @@ on:
         description: "Confirm release creation"
         type: boolean
         required: false
+        default: false
       scope:
         description: "Release scope"
         type: choice
@@ -46,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Error - Missing confirm
-        if: github.event.inputs.confirm_release == ${{ false }}
+        if: github.event.inputs.confirm_release == false
         run: |
           echo "Release creation not confirmed"
           exit 1
