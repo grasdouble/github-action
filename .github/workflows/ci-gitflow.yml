@@ -35,7 +35,7 @@ on:
           - patch
 
 jobs:
-ci-gitflow-display-inputs:
+  ci-gitflow-display-inputs:
     runs-on: ubuntu-latest
     steps:
       - name: Display inputs
