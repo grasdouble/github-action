@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Error - Missing confirm
-        if: github.event.inputs.confirm_release == false
+        if: github.event.inputs.confirm_release == ${{ false }}
         run: |
           echo "Release creation not confirmed"
           exit 1
