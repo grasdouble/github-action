@@ -100,7 +100,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_branch: ${{ steps.release.outputs.releasebranch }}
-          target_branch: fake-main
+          target_branch: main
           title: Release ${{ steps.release.outputs.releaseVersion }}
           body: |
             ## Release ${{ steps.release.outputs.releaseVersion }}
