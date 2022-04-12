@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Error - Missing confirm
-        if: ${{ !github.event.inputs.confirm_release }}
+        if: ${{ github.event.inputs.confirm_release == 'false'}} # Boolean inputs are not actually booleans: https://github.com/actions/runner/issues/1483
         run: |
           echo "Release creation not confirmed"
           exit 1
