@@ -67,12 +67,12 @@ jobs:
         uses: devops-infra/action-pull-request@v0.4.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          target_branch: ${{ github.event.inputs.release_branch }}
-          source_branch: fake-main
+          source_branch: ${{ github.event.inputs.release_branch }}
+          target_branch: fake-main
           title: Test - release pull request
           body: "**Automated pull request**"
-          draft: true
-          get_diff: true
+          draft: false
+          get_diff: false
   ci-gitflow-merge:
     if: github.event.inputs.action == 'merge'
     runs-on: ubuntu-latest
