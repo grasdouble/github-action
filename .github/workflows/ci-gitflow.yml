@@ -101,10 +101,18 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_branch: ${{ steps.release.outputs.releasebranch }}
           target_branch: fake-main
-          title: Test - Release ${{ steps.release.outputs.releaseVersion }}
+          title: Release ${{ steps.release.outputs.releaseVersion }}
           body: |
             ## Release ${{ steps.release.outputs.releaseVersion }}
             **Automated pull request**
+
+            ## Summary
+            <!-- Diff summary - START -->
+            <!-- Diff summary - END -->
+
+            ## Graph
+            <!-- Diff commits - START -->
+            <!-- Diff commits - END -->
 
             ## Modified files
             <!-- Diff files - START -->
