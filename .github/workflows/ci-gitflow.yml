@@ -30,9 +30,8 @@ on:
         options:
           - nothing
           - major
-          - patch
           - minor
-      
+          - patch
 
 jobs:
   ci-gitflow-nothing:
@@ -46,30 +45,41 @@ jobs:
       github.event.inputs.action == 'create'
     runs-on: ubuntu-latest
     steps:
-      - name: Create - Missing inputs
+      - name: Error - Missing inputs
         if: github.event.inputs.release_branch == ''
         run: |
           echo "Release branch is missing"
           exit 1
-      - uses: actions/checkout@v3
+
+      - name: setup git config
+        run: |
+          # git config user.name "Release Bot"
+          # git config user.email "<>"
+          git config user.name $GITHUB_ACTOR
+          git config user.email gh-actions-${GITHUB_ACTOR}@github.com
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
+          # fetch-depth: to be able to detect diff between release branch and main branch
           fetch-depth: 0
+
       - name: Create release from develop to ${{ github.event.inputs.release_branch }}
+        id: release
         run: |
           echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
-          git config --global user.email "you@example.com"
-          git config --global user.name "Robot"
-          git branch ${{ github.event.inputs.release_branch }}
-          git checkout ${{ github.event.inputs.release_branch }}
           cd my-react-app && npm version ${{ github.event.inputs.scope }}
+          echo "::set-output name=releaseName::release_$(jq -r .version package.json)"
+          git branch ${{ steps.release.outputs.releaseName }}
+          git checkout ${{ steps.release.outputs.releaseName }}
           git add package.json
-          git commit -m 'Release'
-          git push origin ${{ github.event.inputs.release_branch }}
+          git commit -m 'Prepare: ${{ steps.release.outputs.releaseName }}'
+          git push origin ${{ steps.release.outputs.releaseName }}
+
       - name: Create Pull Request
         uses: devops-infra/action-pull-request@v0.4.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ github.event.inputs.release_branch }}
+          source_branch: ${{ steps.release.outputs.releaseName }}
           target_branch: fake-main
           title: Test - release pull request
           body: "**Automated pull request**"
