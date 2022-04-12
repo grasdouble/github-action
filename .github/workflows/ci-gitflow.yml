@@ -74,7 +74,7 @@ jobs:
           title: Test - release pull request
           body: "**Automated pull request**"
           draft: false
-          get_diff: false
+          get_diff: true
   ci-gitflow-merge:
     if: github.event.inputs.action == 'merge'
     runs-on: ubuntu-latest
