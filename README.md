@@ -2,6 +2,8 @@
 
 TBD
 
+Test add a new commit on develop before sync with main
+
 # How to test github action locally
 
 ## Install act
