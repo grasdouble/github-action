@@ -1,0 +1,143 @@
+# This workflow will
+# - do a clean installation of node dependencies,
+# - cache/restore them,
+# - run tests across different versions of node
+
+name: CI - Gitflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Gitflow process to trigger"
+        type: choice
+        default: nothing
+        required: true
+        options:
+          - nothing
+          - create
+          - merge
+          - sync
+      confirm_release:
+        description: "Confirm release creation"
+        type: boolean
+        required: false
+        default: false
+      scope:
+        description: "Release scope"
+        type: choice
+        default: nothing
+        required: true
+        options:
+          - nothing
+          - major
+          - minor
+          - patch
+
+jobs:
+  ci-gitflow-display-inputs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display inputs
+        run: |
+          echo "Ref branch               : ${{ github.event.ref }}"
+          echo "Action                   : ${{ github.event.inputs.action }}"
+          echo "Confirm release creation : ${{ github.event.inputs.confirm_release }}"
+          echo "Release scope            : ${{ github.event.inputs.scope }}"
+  ci-gitflow-nothing:
+    if: github.event.inputs.action == 'nothing'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Do Nothing
+        run: |
+          echo "Do nothing"
+          exit 1
+
+  ci-gitflow-create:
+    if: |
+      github.event.inputs.action == 'create'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Error - Missing confirm
+        if: ${{ github.event.inputs.confirm_release == 'false'}} # Boolean inputs are not actually booleans: https://github.com/actions/runner/issues/1483
+        run: |
+          echo "Release creation not confirmed"
+          exit 1
+      - name: Error - Missing scope
+        if: github.event.inputs.scope == 'nothing'
+        run: |
+          echo "Release scope not defined"
+          exit 1
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          # fetch-depth: to be able to detect diff between release branch and main branch
+          fetch-depth: 0
+
+      - name: setup git config
+        run: |
+          # git config user.name "Release Bot"
+          # git config user.email "<>"
+          git config user.name $GITHUB_ACTOR
+          git config user.email gh-actions-${GITHUB_ACTOR}@github.com
+
+      - name: Create release branch and tag
+        id: release
+        run: |
+          echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
+          cd my-react-app && npm version ${{ github.event.inputs.scope }} > ../release.version && cd ..
+          echo "::set-output name=releaseVersion::$(cat release.version)"
+          echo "::set-output name=releasebranch::release_$(cat release.version)"
+          git branch release_$(cat release.version)
+          git checkout release_$(cat release.version)
+          git add my-react-app/package.json
+          git commit -m "Prepare release $(cat release.version)"
+          git push origin release_$(cat release.version)
+          git tag -a $(cat release.version) -m "Release $(cat release.version)"
+          git push origin --tags
+
+      - name: Generate release tag
+        if: steps.release.outputs.releaseVersion
+        uses: Roang-zero1/github-create-release-action@master
+        with:
+          created_tag: ${{ steps.release.outputs.releaseVersion }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create pull request
+        uses: devops-infra/action-pull-request@v0.4.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: ${{ steps.release.outputs.releasebranch }}
+          target_branch: main
+          title: Release ${{ steps.release.outputs.releaseVersion }}
+          body: |
+            ## Release ${{ steps.release.outputs.releaseVersion }}
+            **Automated pull request**
+
+            ## Summary
+            <!-- Diff summary - START -->
+            <!-- Diff summary - END -->
+
+            ## Commits
+            <!-- Diff commits - START -->
+            <!-- Diff commits - END -->
+
+            ## Modified files
+            <!-- Diff files - START -->
+            <!-- Diff files - END -->
+          draft: false
+          get_diff: true
+  ci-gitflow-merge:
+    if: github.event.inputs.action == 'merge'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge release on ...
+        run: echo "Merge release on ..."
+  ci-gitflow-sync:
+    if: github.event.inputs.action == 'sync'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync main with ...
+        run: echo "Sync main with ..."
