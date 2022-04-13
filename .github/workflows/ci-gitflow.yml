@@ -152,4 +152,4 @@ jobs:
       - name: Merge main on develop
         run: |
           git merge origin/main
-          git push
+          git push --no-verify
