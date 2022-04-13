@@ -82,18 +82,28 @@ jobs:
           git config user.name $GITHUB_ACTOR
           git config user.email gh-actions-${GITHUB_ACTOR}@github.com
 
-      - name: Create release branch
+      - name: Create release branch and tag
         id: release
         run: |
           echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
-          cd my-react-app && npm version ${{ github.event.inputs.scope }} > release.version
+          cd my-react-app && npm version ${{ github.event.inputs.scope }} > ../release.version && cd ..
           echo "::set-output name=releaseVersion::$(cat release.version)"
           echo "::set-output name=releasebranch::release_$(cat release.version)"
           git branch release_$(cat release.version)
           git checkout release_$(cat release.version)
-          git add package.json
+          git add my-react-app/package.json
           git commit -m "Prepare release $(cat release.version)"
           git push origin release_$(cat release.version)
+          git tag -a $(cat release.version) -m "Release $(cat release.version)"
+          git push origin --tags
+
+      - name: Generate release tag
+        if: steps.release.outputs.releaseVersion
+        uses: Roang-zero1/github-create-release-action@master
+        with:
+          created_tag: ${{ steps.release.outputs.releaseVersion }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create pull request
         uses: devops-infra/action-pull-request@v0.4.2
