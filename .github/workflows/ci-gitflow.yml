@@ -97,10 +97,6 @@ jobs:
           git tag -a $(cat release.version) -m "Release $(cat release.version)"
           git push origin --tags
 
-      - name: Create release branch
-        id: release
-        run: |
-          echo "Create release tag ${{ steps.release.outputs.releaseVersion }}"
       - name: Generate release tag
         if: steps.release.outputs.releaseVersion
         uses: Roang-zero1/github-create-release-action@master
