@@ -16,7 +16,6 @@ on:
         options:
           - nothing
           - create
-          - merge
           - sync
       confirm_release:
         description: "Confirm release creation"
@@ -33,6 +32,11 @@ on:
           - major
           - minor
           - patch
+      confirm_sync:
+        description: "Confirm sync main/develop"
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   ci-gitflow-display-inputs:
@@ -129,15 +133,28 @@ jobs:
             <!-- Diff files - END -->
           draft: false
           get_diff: true
-  ci-gitflow-merge:
-    if: github.event.inputs.action == 'merge'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Merge release on ...
-        run: echo "Merge release on ..."
+
   ci-gitflow-sync:
     if: github.event.inputs.action == 'sync'
     runs-on: ubuntu-latest
     steps:
-      - name: Sync main with ...
-        run: echo "Sync main with ..."
+      - name: Error - Missing confirm
+        if: ${{ github.event.inputs.confirm_sync == 'false'}} # Boolean inputs are not actually booleans: https://github.com/actions/runner/issues/1483
+        run: |
+          echo "Release creation not confirmed"
+          exit 1
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          # fetch-depth: to be able to detect diff between release branch and main branch
+          fetch-depth: 0
+          ref: develop
+
+      - name: Opening pull request
+        id: pull
+        uses: tretuna/sync-branches@1.4.0
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          FROM_BRANCH: "main"
+          TO_BRANCH: "develop"
+          CONTENT_COMPARISON: true
