@@ -150,21 +150,10 @@ jobs:
           fetch-depth: 0
           ref: develop
 
-      - name: Temporarily disable "include administrators" branch protection
-        uses: benjefferies/branch-protection-bot@master
-        if: always()
+      - name: Opening pull request
+        id: pull
+        uses: tretuna/sync-branches@1.4.0
         with:
-          access_token: ${{ secrets.MANAGE_BRANCH_SECURITY }}
-          branch: ${{ github.event.repository.default_branch }}
-
-      - name: Merge main on develop
-        run: |
-          git merge origin/main
-          git push
-
-      - name: Enable "include administrators" branch protection
-        uses: benjefferies/branch-protection-bot@master
-        if: always()  # Force to always run this step to ensure "include administrators" is always turned back on
-        with:
-          access_token: ${{ secrets.MANAGE_BRANCH_SECURITY }}
-          branch: ${{ github.event.repository.default_branch }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          FROM_BRANCH: "main"
+          TO_BRANCH: "develop"
