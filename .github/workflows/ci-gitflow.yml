@@ -18,11 +18,6 @@ on:
           - create release
           - merge release
           - sync
-      confirm_release:
-        description: "Confirm release creation"
-        type: boolean
-        required: false
-        default: false
       scope:
         description: "Release scope"
         type: choice
@@ -33,11 +28,6 @@ on:
           - major
           - minor
           - patch
-      confirm_sync:
-        description: "Confirm sync main/develop"
-        type: boolean
-        required: false
-        default: false
 
 jobs:
   ci-gitflow-display-inputs:
@@ -48,11 +38,10 @@ jobs:
           echo "Github event ref branch  : ${{ github.event.ref }}"
           echo "Github branch            : ${GITHUB_REF#refs/heads/}"
           echo "Action                   : ${{ github.event.inputs.action }}"
-          echo "Confirm release creation : ${{ github.event.inputs.confirm_release }}"
           echo "Release scope            : ${{ github.event.inputs.scope }}"
 
   ci-gitflow-nothing:
-    environment: Create Release
+  environment: Need Review
     if: github.event.inputs.action == 'nothing'
     runs-on: ubuntu-latest
     steps:
@@ -62,16 +51,11 @@ jobs:
           exit 1
 
   ci-gitflow-create:
-    environment: Create Release
+    environment: Need Review
     if: |
       github.event.inputs.action == 'create release'
     runs-on: ubuntu-latest
     steps:
-      - name: Error - Missing confirm
-        if: ${{ github.event.inputs.confirm_release == 'false'}} # Boolean inputs are not actually booleans: https://github.com/actions/runner/issues/1483
-        run: |
-          echo "Release creation not confirmed"
-          exit 1
       - name: Error - Missing scope
         if: github.event.inputs.scope == 'nothing'
         run: |
@@ -170,6 +154,7 @@ jobs:
           get_diff: true
 
   ci-gitflow-merge-main:
+    environment: Need Review
     if: github.event.inputs.action == 'merge release' && (startsWith(github.event.ref, 'refs/heads/release') || startsWith(github.event.ref,'refs/heads/feat'))
     runs-on: ubuntu-latest
     steps:
@@ -188,31 +173,6 @@ jobs:
       - name: Merge release branch into main
         id: release
         run: |
-          echo "Merge ${GITHUB_REF#refs/heads/} to main-fake"
+          echo "Merge ${{GITHUB_REF#refs/heads/}} to main-fake"
           git merge origin/${GITHUB_REF#refs/heads/}
           git push origin
-
-  ci-gitflow-sync:
-    if: github.event.inputs.action == 'sync'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Error - Missing confirm
-        if: ${{ github.event.inputs.confirm_sync == 'false'}} # Boolean inputs are not actually booleans: https://github.com/actions/runner/issues/1483
-        run: |
-          echo "Release creation not confirmed"
-          exit 1
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          # fetch-depth: to be able to detect diff between release branch and main branch
-          fetch-depth: 0
-          ref: develop
-
-      - name: Opening pull request
-        id: pull
-        uses: tretuna/sync-branches@1.4.0
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          FROM_BRANCH: "main"
-          TO_BRANCH: "develop"
-          CONTENT_COMPARISON: true
