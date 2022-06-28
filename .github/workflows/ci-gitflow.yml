@@ -16,6 +16,7 @@ on:
         options:
           - nothing
           - create release
+          - merge release
           - sync
       confirm_release:
         description: "Confirm release creation"
@@ -50,7 +51,7 @@ jobs:
           echo "Release scope            : ${{ github.event.inputs.scope }}"
   
   ci-gitflow-nothing:
-    environment: Release
+    environment: Create Release
     if: github.event.inputs.action == 'nothing'
     runs-on: ubuntu-latest
     steps:
@@ -60,6 +61,7 @@ jobs:
           exit 1
 
   ci-gitflow-create:
+    environment: Create Release
     if: |
       github.event.inputs.action == 'create release'
     runs-on: ubuntu-latest
@@ -165,7 +167,30 @@ jobs:
             <!-- Diff files - END -->
           draft: false
           get_diff: true
-
+  
+  ci-gitflow-merge-main:
+    if: github.event.inputs.action == 'merge release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          # fetch-depth: to be able to detect diff between release branch and main branch
+          fetch-depth: 0
+          ref: main-fake
+      - name: setup git config
+        run: |
+          # git config user.name "Release Bot"
+          # git config user.email "<>"
+          git config user.name $GITHUB_ACTOR
+          git config user.email gh-actions-${GITHUB_ACTOR}@github.com
+      - name: Merge release branch into main
+        id: release
+        run: |
+          echo "Merge ${{ github.event.ref }} to main-fake"
+          git merge ${{ github.event.ref }}
+          git push origin    
+    
   ci-gitflow-sync:
     if: github.event.inputs.action == 'sync'
     runs-on: ubuntu-latest
