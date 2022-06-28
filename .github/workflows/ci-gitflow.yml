@@ -178,9 +178,9 @@ jobs:
         id: release
         run: |
           echo "Merge ${GITHUB_REF#refs/heads/} to main"
-          git checkout origin/${GITHUB_REF#refs/heads/}
+          git checkout ${GITHUB_REF#refs/heads/} origin/${GITHUB_REF#refs/heads/}
           git checkout main
-          git merge ${GITHUB_REF#refs/heads/}
+          git merge --ff ${GITHUB_REF#refs/heads/}
           git push origin
 
   ci-gitflow-merge-develop:
@@ -205,7 +205,7 @@ jobs:
         id: release
         run: |
           echo "Merge ${GITHUB_REF#refs/heads/} to develop"
-          git checkout origin/${GITHUB_REF#refs/heads/}
-          git checkout main
-          git merge ${GITHUB_REF#refs/heads/}
+          git checkout ${GITHUB_REF#refs/heads/} origin/${GITHUB_REF#refs/heads/}
+          git checkout develop
+          git merge --ff ${GITHUB_REF#refs/heads/}
           git push origin
