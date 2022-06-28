@@ -46,7 +46,7 @@ jobs:
       - name: Display inputs
         run: |
           echo "Github event ref branch  : ${{ github.event.ref }}"
-          echo "Github branch.           : $(echo $GITHUB_REF | cut -d'/' -f 3)"
+          echo "Github branch            : ${GITHUB_REF#refs/heads/}"
           echo "Action                   : ${{ github.event.inputs.action }}"
           echo "Confirm release creation : ${{ github.event.inputs.confirm_release }}"
           echo "Release scope            : ${{ github.event.inputs.scope }}"
@@ -170,9 +170,16 @@ jobs:
           get_diff: true
   
   ci-gitflow-merge-main:
-    if: github.event.inputs.action == 'merge release'
+    if: github.event.inputs.action == 'merge release' 
     runs-on: ubuntu-latest
     steps:
+      - name: Check release branch name
+        run: |
+          if  [[ ${GITHUB_REF#refs/heads/} == ${{ secrets.RELEASE_PREFIX }} ]] || [[ ${GITHUB_REF#refs/heads/} == ${{ secrets.FEAT_PREFIX }} ]] ;
+          then
+            echo "Wrong branch name. A release branch should start with 'release/'"
+            exit 1
+          fi
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
@@ -191,7 +198,9 @@ jobs:
           echo "Merge ${GITHUB_REF#refs/heads/} to main-fake"
           git merge origin/${GITHUB_REF#refs/heads/}
           git push origin    
-    
+  
+  
+  
   ci-gitflow-sync:
     if: github.event.inputs.action == 'sync'
     runs-on: ubuntu-latest
