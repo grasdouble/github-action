@@ -170,16 +170,9 @@ jobs:
           get_diff: true
 
   ci-gitflow-merge-main:
-    if: github.event.inputs.action == 'merge release'
+    if: github.event.inputs.action == 'merge release' && (startsWith(GITHUB_REF#refs/heads/, secrets.RELEASE_PREFIX) || (startsWith(GITHUB_REF#refs/heads/, secrets.FEAT_PREFIX)
     runs-on: ubuntu-latest
     steps:
-      - name: Check release branch name
-        run: |
-          if  [ "${GITHUB_REF#refs/heads/}" != ${{ secrets.RELEASE_PREFIX }} ] && [ "${GITHUB_REF#refs/heads/}" != ${{ secrets.FEAT_PREFIX }} ] ;
-          then
-            echo "Wrong branch name. A release branch should start with 'release/'"
-            exit 1
-          fi
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
