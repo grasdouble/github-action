@@ -163,7 +163,7 @@ jobs:
         with:
           # fetch-depth: to be able to detect diff between release branch and main branch
           fetch-depth: 0
-          ref: main-fake
+          ref: main
       - name: setup git config
         run: |
           # git config user.name "Release Bot"
@@ -173,6 +173,30 @@ jobs:
       - name: Merge release branch into main
         id: release
         run: |
-          echo "Merge ${GITHUB_REF#refs/heads/} to main-fake"
+          echo "Merge ${GITHUB_REF#refs/heads/} to main"
+          git merge origin/${GITHUB_REF#refs/heads/}
+          git push origin
+
+  ci-gitflow-merge-develop:
+    environment: Need Review
+    if: github.event.inputs.action == 'merge release' && (startsWith(github.event.ref, 'refs/heads/release') || startsWith(github.event.ref,'refs/heads/feat'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          # fetch-depth: to be able to detect diff between release branch and main branch
+          fetch-depth: 0
+          ref: develop
+      - name: setup git config
+        run: |
+          # git config user.name "Release Bot"
+          # git config user.email "<>"
+          git config user.name $GITHUB_ACTOR
+          git config user.email gh-actions-${GITHUB_ACTOR}@github.com
+      - name: Merge release branch into develop
+        id: release
+        run: |
+          echo "Merge ${GITHUB_REF#refs/heads/} to develop"
           git merge origin/${GITHUB_REF#refs/heads/}
           git push origin
