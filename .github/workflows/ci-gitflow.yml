@@ -99,13 +99,13 @@ jobs:
         with:
           created_tag: ${{ steps.release.outputs.releaseVersion }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
 
       - name: Create pull request to main
         if: steps.release.outputs.releaseVersion
         uses: devops-infra/action-pull-request@v0.4.2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GIT_TOKEN }}
           source_branch: ${{ steps.release.outputs.releasebranch }}
           target_branch: main
           title: Release ${{ steps.release.outputs.releaseVersion }}
@@ -131,7 +131,7 @@ jobs:
         if: steps.release.outputs.releaseVersion
         uses: devops-infra/action-pull-request@v0.4.2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GIT_TOKEN }}
           source_branch: ${{ steps.release.outputs.releasebranch }}
           target_branch: develop
           title: Release ${{ steps.release.outputs.releaseVersion }}
@@ -164,6 +164,7 @@ jobs:
           # fetch-depth: to be able to detect diff between release branch and main branch
           fetch-depth: 0
           ref: main
+          token: ${{secret.GIT_TOKEN}}
       - name: setup git config
         run: |
           # git config user.name "Release Bot"
