@@ -15,7 +15,7 @@ on:
         required: true
         options:
           - nothing
-          - create
+          - create release
           - sync
       confirm_release:
         description: "Confirm release creation"
@@ -44,11 +44,13 @@ jobs:
     steps:
       - name: Display inputs
         run: |
-          echo "Ref branch               : ${{ github.event.ref }}"
+          echo "Github event ref branch  : ${{ github.event.ref }}"
           echo "Action                   : ${{ github.event.inputs.action }}"
           echo "Confirm release creation : ${{ github.event.inputs.confirm_release }}"
           echo "Release scope            : ${{ github.event.inputs.scope }}"
+  
   ci-gitflow-nothing:
+    environment: Release
     if: github.event.inputs.action == 'nothing'
     runs-on: ubuntu-latest
     steps:
@@ -59,7 +61,7 @@ jobs:
 
   ci-gitflow-create:
     if: |
-      github.event.inputs.action == 'create'
+      github.event.inputs.action == 'create release'
     runs-on: ubuntu-latest
     steps:
       - name: Error - Missing confirm
@@ -78,6 +80,7 @@ jobs:
         with:
           # fetch-depth: to be able to detect diff between release branch and main branch
           fetch-depth: 0
+          ref: ${{ github.event.ref }}
 
       - name: setup git config
         run: |
@@ -89,7 +92,7 @@ jobs:
       - name: Create release branch and tag
         id: release
         run: |
-          echo "Create release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }}"
+          echo "Create release from ${{ github.event.ref }} to a new release branch and create tag"
           cd my-react-app && npm version ${{ github.event.inputs.scope }} > ../release.version && cd ..
           echo "::set-output name=releaseVersion::$(cat release.version)"
           echo "::set-output name=releasebranch::release_$(cat release.version)"
@@ -100,6 +103,8 @@ jobs:
           git push origin release_$(cat release.version)
           git tag -a $(cat release.version) -m "Release $(cat release.version)"
           git push origin --tags
+          echo "Release from ${{ github.event.ref }} to ${{ github.event.inputs.release_branch }} created"
+          echo "Release tag $(cat release.version) created"
 
       - name: Generate release tag
         if: steps.release.outputs.releaseVersion
@@ -109,12 +114,39 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create pull request
+      - name: Create pull request to main
+        if: steps.release.outputs.releaseVersion
         uses: devops-infra/action-pull-request@v0.4.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_branch: ${{ steps.release.outputs.releasebranch }}
           target_branch: main
+          title: Release ${{ steps.release.outputs.releaseVersion }}
+          body: |
+            ## Release ${{ steps.release.outputs.releaseVersion }}
+            **Automated pull request**
+
+            ## Summary
+            <!-- Diff summary - START -->
+            <!-- Diff summary - END -->
+
+            ## Commits
+            <!-- Diff commits - START -->
+            <!-- Diff commits - END -->
+
+            ## Modified files
+            <!-- Diff files - START -->
+            <!-- Diff files - END -->
+          draft: false
+          get_diff: true
+          
+      - name: Create pull request to develop
+        if: steps.release.outputs.releaseVersion
+        uses: devops-infra/action-pull-request@v0.4.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          source_branch: ${{ steps.release.outputs.releasebranch }}
+          target_branch: develop
           title: Release ${{ steps.release.outputs.releaseVersion }}
           body: |
             ## Release ${{ steps.release.outputs.releaseVersion }}
