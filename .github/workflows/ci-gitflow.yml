@@ -178,7 +178,7 @@ jobs:
         id: release
         run: |
           echo "Merge ${GITHUB_REF#refs/heads/} to main"
-          git checkout ${GITHUB_REF#refs/heads/} origin/${GITHUB_REF#refs/heads/}
+          git checkout -b ${GITHUB_REF#refs/heads/} origin/${GITHUB_REF#refs/heads/}
           git checkout main
           git merge --ff ${GITHUB_REF#refs/heads/}
           git push origin
@@ -205,7 +205,7 @@ jobs:
         id: release
         run: |
           echo "Merge ${GITHUB_REF#refs/heads/} to develop"
-          git checkout ${GITHUB_REF#refs/heads/} origin/${GITHUB_REF#refs/heads/}
+          git checkout -b ${GITHUB_REF#refs/heads/} origin/${GITHUB_REF#refs/heads/}
           git checkout develop
           git merge --ff ${GITHUB_REF#refs/heads/}
           git push origin
