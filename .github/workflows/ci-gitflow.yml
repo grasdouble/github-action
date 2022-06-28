@@ -46,6 +46,7 @@ jobs:
       - name: Display inputs
         run: |
           echo "Github event ref branch  : ${{ github.event.ref }}"
+          echo "Github branch.           : ${{ GIT_BRANCH }}"
           echo "Action                   : ${{ github.event.inputs.action }}"
           echo "Confirm release creation : ${{ github.event.inputs.confirm_release }}"
           echo "Release scope            : ${{ github.event.inputs.scope }}"
@@ -188,7 +189,7 @@ jobs:
         id: release
         run: |
           echo "Merge ${{ github.event.ref }} to main-fake"
-          git merge ${{ github.event.ref }}
+          git merge origin/${{ GIT_BRANCH }}
           git push origin    
     
   ci-gitflow-sync:
