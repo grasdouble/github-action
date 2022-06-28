@@ -175,7 +175,7 @@ jobs:
     steps:
       - name: Check release branch name
         run: |
-          if  [[ ${GITHUB_REF#refs/heads/} != ${{ secrets.RELEASE_PREFIX }} && [[ ${GITHUB_REF#refs/heads/} != ${{ secrets.FEAT_PREFIX }} ]] ;
+          if  [ ${GITHUB_REF#refs/heads/} != ${{ secrets.RELEASE_PREFIX }} ] && [ ${GITHUB_REF#refs/heads/} != ${{ secrets.FEAT_PREFIX }} ] ;
           then
             echo "Wrong branch name. A release branch should start with 'release/'"
             exit 1
