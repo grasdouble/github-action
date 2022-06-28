@@ -68,6 +68,7 @@ jobs:
           # fetch-depth: to be able to detect diff between release branch and main branch
           fetch-depth: 0
           ref: ${{ github.event.ref }}
+          token: ${{secrets.GIT_TOKEN}}
 
       - name: setup git config
         run: |
@@ -164,7 +165,7 @@ jobs:
           # fetch-depth: to be able to detect diff between release branch and main branch
           fetch-depth: 0
           ref: main
-          token: ${{secret.GIT_TOKEN}}
+          token: ${{secrets.GIT_TOKEN}}
       - name: setup git config
         run: |
           # git config user.name "Release Bot"
@@ -189,6 +190,7 @@ jobs:
           # fetch-depth: to be able to detect diff between release branch and main branch
           fetch-depth: 0
           ref: develop
+          token: ${{secrets.GIT_TOKEN}}
       - name: setup git config
         run: |
           # git config user.name "Release Bot"
