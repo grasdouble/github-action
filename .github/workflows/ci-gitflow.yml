@@ -41,7 +41,7 @@ jobs:
           echo "Release scope            : ${{ github.event.inputs.scope }}"
 
   ci-gitflow-nothing:
-  environment: Need Review
+    environment: Need Review
     if: github.event.inputs.action == 'nothing'
     runs-on: ubuntu-latest
     steps:
