@@ -155,7 +155,7 @@ jobs:
 
   ci-gitflow-merge-main:
     environment: Need Review
-    if: github.event.inputs.action == 'merge release' && (startsWith(github.event.ref, 'refs/heads/release') || startsWith(github.event.ref,'refs/heads/feat'))
+    if: github.event.inputs.action == 'merge release' && startsWith(github.event.ref, 'refs/heads/release')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -179,7 +179,7 @@ jobs:
 
   ci-gitflow-merge-develop:
     environment: Need Review
-    if: github.event.inputs.action == 'merge release' && (startsWith(github.event.ref, 'refs/heads/release') || startsWith(github.event.ref,'refs/heads/feat'))
+    if: github.event.inputs.action == 'merge release' && startsWith(github.event.ref, 'refs/heads/release')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
