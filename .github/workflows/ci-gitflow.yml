@@ -50,7 +50,7 @@ jobs:
           echo "Action                   : ${{ github.event.inputs.action }}"
           echo "Confirm release creation : ${{ github.event.inputs.confirm_release }}"
           echo "Release scope            : ${{ github.event.inputs.scope }}"
-  
+
   ci-gitflow-nothing:
     environment: Create Release
     if: github.event.inputs.action == 'nothing'
@@ -142,7 +142,7 @@ jobs:
             <!-- Diff files - END -->
           draft: false
           get_diff: true
-          
+
       - name: Create pull request to develop
         if: steps.release.outputs.releaseVersion
         uses: devops-infra/action-pull-request@v0.4.2
@@ -168,14 +168,14 @@ jobs:
             <!-- Diff files - END -->
           draft: false
           get_diff: true
-  
+
   ci-gitflow-merge-main:
-    if: github.event.inputs.action == 'merge release' 
+    if: github.event.inputs.action == 'merge release'
     runs-on: ubuntu-latest
     steps:
       - name: Check release branch name
         run: |
-          if  [ "${{GITHUB_REF#refs/heads/}}" != ${{ secrets.RELEASE_PREFIX }} ] && [ "${{GITHUB_REF#refs/heads/}}" != ${{ secrets.FEAT_PREFIX }} ] ;
+          if  [ "${GITHUB_REF#refs/heads/}" != ${{ secrets.RELEASE_PREFIX }} ] && [ "${GITHUB_REF#refs/heads/}" != ${{ secrets.FEAT_PREFIX }} ] ;
           then
             echo "Wrong branch name. A release branch should start with 'release/'"
             exit 1
@@ -197,10 +197,8 @@ jobs:
         run: |
           echo "Merge ${{GITHUB_REF#refs/heads/}} to main-fake"
           git merge origin/${GITHUB_REF#refs/heads/}
-          git push origin    
-  
-  
-  
+          git push origin
+
   ci-gitflow-sync:
     if: github.event.inputs.action == 'sync'
     runs-on: ubuntu-latest
