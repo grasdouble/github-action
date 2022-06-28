@@ -175,12 +175,18 @@ jobs:
           git config user.name $GITHUB_ACTOR
           git config user.email gh-actions-${GITHUB_ACTOR}@github.com
       - name: Merge release branch into main
-        id: release
+        id: prepare-merge-main
+        run: |
+          echo "Merge merge to main"
+          git checkout -b ${GITHUB_REF#refs/heads/}-main origin/${GITHUB_REF#refs/heads/}
+          git push origin ${GITHUB_REF#refs/heads/}-main
+
+      - name: Merge release branch into main
+        id: merge-main
         run: |
           echo "Merge ${GITHUB_REF#refs/heads/} to main"
-          git checkout -b ${GITHUB_REF#refs/heads/} origin/${GITHUB_REF#refs/heads/}
           git checkout main
-          git merge --ff ${GITHUB_REF#refs/heads/}
+          git merge --ff ${GITHUB_REF#refs/heads/}-main
           git push origin
 
   ci-gitflow-merge-develop:
@@ -202,10 +208,15 @@ jobs:
           git config user.name $GITHUB_ACTOR
           git config user.email gh-actions-${GITHUB_ACTOR}@github.com
       - name: Merge release branch into develop
-        id: release
+        id: prepare-merge-develop
+        run: |
+          echo "Merge merge to develop"
+          git checkout -b ${GITHUB_REF#refs/heads/}-develop origin/${GITHUB_REF#refs/heads/}
+          git push origin ${GITHUB_REF#refs/heads/}-develop
+      - name: Merge release branch into develop
+        id: merge-develop
         run: |
           echo "Merge ${GITHUB_REF#refs/heads/} to develop"
-          git checkout -b ${GITHUB_REF#refs/heads/} origin/${GITHUB_REF#refs/heads/}
           git checkout develop
-          git merge --ff ${GITHUB_REF#refs/heads/}
+          git merge --ff ${GITHUB_REF#refs/heads/}-develop
           git push origin
