@@ -170,7 +170,7 @@ jobs:
           get_diff: true
 
   ci-gitflow-merge-main:
-    if: github.event.inputs.action == 'merge release' && (startsWith(GITHUB_REF#refs/heads/, secrets.RELEASE_PREFIX) || (startsWith(GITHUB_REF#refs/heads/, secrets.FEAT_PREFIX)
+    if: github.event.inputs.action == 'merge release' && (startsWith(${GITHUB_REF#refs/heads/}, secrets.RELEASE_PREFIX) || (startsWith(${GITHUB_REF#refs/heads/}, secrets.FEAT_PREFIX)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
