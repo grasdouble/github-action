@@ -1,6 +1,20 @@
 # This workflow will be able to manage:
 # - creation of a release branch
 # - create a PR to main and develop
+#
+# The workflow will need an input type choice with this list as options
+#   - nothing
+#   - major
+#   - premajor
+#   - minor
+#   - preminor
+#   - patch
+#   - prepatch
+#   - prerelease
+#
+# If you want to add a manual action to approve the creation of the release, you need to create an environment 'Need Review' and set a list of reviewer in your repository settings
+#
+# On PR created by the workflow, it's recommanded to use merge action instead of squash to keep main and develop sync and not create conflict or strange history
 
 on:
   workflow_call:
@@ -10,15 +24,6 @@ on:
         type: string
         default: nothing
         required: true
-        # options:
-        #   - nothing
-        #   - major
-        #   - premajor
-        #   - minor
-        #   - preminor
-        #   - patch
-        #   - prepatch
-        #   - prerelease
 
 jobs:
   display-inputs:
