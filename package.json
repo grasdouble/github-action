@@ -1,0 +1,21 @@
+{
+  "name": "github-action",
+  "version": "0.1.0",
+  "description": "Regroup all reusable workflow used in grasdouble's repositories",
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grasdouble/github-action.git"
+  },
+  "keywords": [
+    "github-action"
+  ],
+  "author": "Noofreuuuh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/grasdouble/github-action/issues"
+  },
+  "homepage": "https://github.com/grasdouble/github-action#readme"
+}

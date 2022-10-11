@@ -1,6 +1,6 @@
-# github-action-test
+# github-action
 
-TBD
+Github-action is a repository regrouping all my reusable workflow
 
 # How to test github action locally
 
