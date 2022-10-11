@@ -3,7 +3,7 @@
 # - create a PR to main and develop
 #
 # The workflow will need an input type choice with this list as options
-#   - nothing
+#   - nothing (it's a security in case user valid exec without checking this option)
 #   - major
 #   - premajor
 #   - minor
@@ -24,6 +24,22 @@ on:
         type: string
         default: nothing
         required: true
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "Release scope"
+        type: choice
+        default: nothing
+        required: true
+        options:
+          - nothing
+          - major
+          - premajor
+          - minor
+          - preminor
+          - patch
+          - prepatch
+          - prerelease
 
 jobs:
   display-inputs:
