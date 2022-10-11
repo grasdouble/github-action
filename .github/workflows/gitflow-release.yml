@@ -125,7 +125,10 @@ jobs:
     needs: [create-release, create-pr-develop]
     steps:
       - name: Create pull request to main
-        if: github.event.inputs.scope == 'patch' && github.event.inputs.scope == 'minor' && github.event.inputs.scope == 'major'
+        if: |
+          github.event.inputs.scope == 'patch' ||
+          github.event.inputs.scope == 'minor' ||
+          github.event.inputs.scope == 'major'
         uses: actions/github-script@v6
         with:
           script: |
