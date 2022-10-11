@@ -91,7 +91,7 @@ jobs:
     needs: [create-release]
     steps:
       - name: Create pull request to develop
-        if: needs.create-release.outputs.releaseVersion && github.event.inputs.scope == 'patch' && github.event.inputs.scope == 'minor' && github.event.inputs.scope == 'major'
+        if: github.event.inputs.scope == 'patch' && github.event.inputs.scope == 'minor' && github.event.inputs.scope == 'major'
         uses: actions/github-script@v6
         with:
           script: |
@@ -119,7 +119,7 @@ jobs:
     needs: [create-release, create-pr-develop]
     steps:
       - name: Create pull request to main
-        if: needs.create-release.outputs.releaseVersion && github.event.inputs.scope == 'patch' && github.event.inputs.scope == 'minor' && github.event.inputs.scope == 'major'
+        if: github.event.inputs.scope == 'patch' && github.event.inputs.scope == 'minor' && github.event.inputs.scope == 'major'
         uses: actions/github-script@v6
         with:
           script: |
