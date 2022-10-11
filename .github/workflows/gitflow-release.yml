@@ -40,13 +40,13 @@ jobs:
     steps:
       - name: Error - Missing scope
         if: |
-          github.event.inputs.scope == 'major' ||
-          github.event.inputs.scope == 'premajor' ||
-          github.event.inputs.scope == 'minor' ||
-          github.event.inputs.scope == 'preminor' ||
-          github.event.inputs.scope == 'patch' ||
-          github.event.inputs.scope == 'prepatch' ||
-          github.event.inputs.scope == 'prerelease'
+          github.event.inputs.scope != 'major' &&
+          github.event.inputs.scope != 'premajor' &&
+          github.event.inputs.scope != 'minor' &&
+          github.event.inputs.scope != 'preminor' &&
+          github.event.inputs.scope != 'patch' &&
+          github.event.inputs.scope != 'prepatch' &&
+          github.event.inputs.scope != 'prerelease'
         run: |
           echo "Release scope not well defined (use 'major', 'premajor', 'minor', 'preminor', 'patch', 'prepatch' or 'prerelease'"
           exit 1
