@@ -1,3 +1,7 @@
+# This workflow will be able to manage:
+# - creation of a release branch
+# - create a PR to main and develop
+
 on:
   workflow_call:
     inputs:
@@ -84,7 +88,7 @@ jobs:
   create-pr-develop:
     environment: Need Review
     runs-on: ubuntu-latest
-    needs: [ci-gitflow-create-release]
+    needs: [create-release]
     steps:
       - name: Create pull request to develop
         if: needs.ci-gitflow-create-release.outputs.releaseVersion
@@ -112,7 +116,7 @@ jobs:
   create-pr-main:
     environment: Need Review
     runs-on: ubuntu-latest
-    needs: [ci-gitflow-create-release, ci-gitflow-pr-develop]
+    needs: [create-release, create-pr-develop]
     steps:
       - name: Create pull request to main
         if: needs.ci-gitflow-create-release.outputs.releaseVersion
