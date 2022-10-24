@@ -25,6 +25,6 @@ jobs:
           echo "Modified workflows       : $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})"
           
       - name: Run script
-        run: bash ./releaseAction/script.sh ${{ github.event.before }} ${{ github.event.after }}
+        run: bash ./scripts/releaseAction/script.sh ${{ github.event.before }} ${{ github.event.after }}
         
-        #bash ./releaseAction/script.sh 25412acbbbad117cc11d94f7f4e3cf349a5c515d e994f6d09c0fcb247dc628b2aca5878d00d39
+        #bash ./scripts/releaseAction/script.sh e994f6d09c0fcb247dc628b2aca5878d00d39d3e 14bd3be9b33ba23d0b389f58245420fb8a2c7463
