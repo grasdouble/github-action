@@ -17,4 +17,4 @@ jobs:
         uses: tj-actions/changed-files@v33
       - name: List all changed files
         run: |
-          echo ${{ steps.changed-files.outputs.all_changed_files }}
+          echo ${{ steps.changed-files.outputs.all_changed_files  }}| grep
