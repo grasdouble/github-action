@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - fix-release-action
 
 jobs:
   list-of-action-to-release:
