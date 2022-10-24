@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-      - ImproveReleaseGithubAction
 
 jobs:
   list-of-action-to-release:
