@@ -1,5 +1,6 @@
 # github-action
 
+test
 Github-action is a repository regrouping all my reusable workflow
 
 # How to test github action locally

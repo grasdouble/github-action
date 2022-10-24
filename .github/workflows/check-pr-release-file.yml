@@ -19,7 +19,7 @@ jobs:
         run: |
           echo ${{ steps.changed-files.outputs.all_changed_files  }}
           echo $(echo "${{ steps.changed-files.outputs.all_changed_files  }}"| grep release.txt)
-          if grep -q "release.txt" <<< echo "${{ steps.changed-files.outputs.all_changed_files  }}"; then
+          if grep -q -w "release.txt" <<< "${{ steps.changed-files.outputs.all_changed_files  }}"; then
             echo "release.txt is well in the list of modified files"
             exit 0
           else
