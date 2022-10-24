@@ -1,1 +1,0 @@
-echo "Modified workflows           : $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})"
