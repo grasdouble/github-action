@@ -20,3 +20,4 @@ jobs:
           echo "Github branch            : ${GITHUB_REF#refs/heads/}"
           echo "Commit SHA               : ${{ github.sha }}"
           echo "Modified files           : $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})"
+          echo "$(git diff --name-only 67d420b78b4f44a2b520c5c91a293b4b08dfda12 fc29a3c4a4d2f0985dfff1a69fdb39c5b40642ea)"
