@@ -39,6 +39,6 @@ jobs:
                 -H "Accept: application/vnd.github+json" \
                 -H "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}" \
                 https://api.github.com/repos/grasdouble/github-action/releases \
-                -d '{"tag_name":"'"${n}"'","target_commitish":"develop","name":"'"${n}"'","body":"Release \"$n\"","draft":false,"prerelease":false,"generate_release_notes":false}'
+                -d '{"tag_name":"'"${n}"'","target_commitish":"develop","name":"'"${n}"'","body":"Release \"${n}\"","draft":false,"prerelease":false,"generate_release_notes":false}'
             fi
           done <<< "$versions"
