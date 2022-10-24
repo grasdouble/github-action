@@ -1,5 +1,5 @@
 name: Release Action
-# this is only a comment to see it in logs - 001
+# this is only a comment to see it in logs - 002
 
 on:
   push:
