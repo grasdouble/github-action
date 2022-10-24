@@ -31,4 +31,4 @@ This message is displayed because this reusable workflow recieved the secret dem
 
 ## Refs
 
-https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecretsinherit
+- https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecretsinherit

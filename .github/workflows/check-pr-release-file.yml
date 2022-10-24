@@ -1,0 +1,31 @@
+name: Check - PR Release file
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  check-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v33
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "- $file"
+          done
+      - name: Test if release.txt is modified
+        run: |
+          if grep -q -w "release.txt" <<< "${{ steps.changed-files.outputs.all_changed_files  }}"; then
+            echo "release.txt is well in the list of modified files"
+            exit 0
+          else
+            echo "release.txt is not in the list of modified files"
+            exit 1
+          fi
