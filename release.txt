@@ -1,3 +1,4 @@
-gitflow-release_v0.2.0
+check-pr-release-file_v0.1.0
 demo-inherit-secret_v0.1.0
+gitflow-release_v0.2.0
 releaseAction_v0.1.0
