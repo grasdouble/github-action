@@ -1,0 +1,13 @@
+name: Check - PR Release file
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  check-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check modified files
+        run: echo ${{ github.files }}
