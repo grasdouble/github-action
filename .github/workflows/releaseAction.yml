@@ -22,3 +22,6 @@ jobs:
           echo "Github branch            : ${GITHUB_REF#refs/heads/}"
           echo "Commit SHA               : ${{ github.sha }}"
           echo "Modified workflows           : $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})"
+          
+      - name: Run script
+        run: ./releaseAction/script.sh
