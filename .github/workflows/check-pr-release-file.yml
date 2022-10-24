@@ -17,8 +17,11 @@ jobs:
         uses: tj-actions/changed-files@v33
       - name: List all changed files
         run: |
-          echo ${{ steps.changed-files.outputs.all_changed_files  }}
-          echo $(echo "${{ steps.changed-files.outputs.all_changed_files  }}"| grep release.txt)
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "- $file"
+          done
+      - name: Test if release.txt is modified
+        run: |
           if grep -q -w "release.txt" <<< "${{ steps.changed-files.outputs.all_changed_files  }}"; then
             echo "release.txt is well in the list of modified files"
             exit 0

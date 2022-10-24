@@ -9,7 +9,7 @@ versions=$(cat ./release.txt)
 
 while read n; do 
   echo "Name $n"
-  if grep -q $n <<< $(git tag -l); then
+  if grep -q -w $n <<< $(git tag -l); then
     echo "$n already exist"
   else
     git tag $n
