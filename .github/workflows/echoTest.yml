@@ -3,7 +3,7 @@ name: Release Action
 on:
   push:
     branches:
-      - manageReleaseTag
+      - echoTest #not a real branch name
 
 jobs:
   list-of-action-to-release:
@@ -20,5 +20,3 @@ jobs:
           echo "Github event ref branch  : ${{ github.event.ref }}"
           echo "Github actor             : $GITHUB_ACTOR"
           echo "Github branch            : ${GITHUB_REF#refs/heads/}"
-          echo "Commit SHA               : ${{ github.sha }}"
-          echo "Modified workflows           : $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})"
