@@ -1,0 +1,17 @@
+name: Release Action
+
+on:
+  push:
+    branches:
+      - manageReleaseTag
+
+jobs:
+  list-of-action-to-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display info
+        run: |
+          echo "Github event ref branch  : ${{ github.event.ref }}"
+          echo "Github actor             : $GITHUB_ACTOR"
+          echo "Github branch            : ${GITHUB_REF#refs/heads/}"
+          echo "Release scope            : ${{ github.event }}"
