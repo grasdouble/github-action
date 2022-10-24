@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git fetch --tag
+
 previousCommit=$1
 lastCommit=$2
 
