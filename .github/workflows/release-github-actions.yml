@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - ImproveReleaseGithubAction
 
 jobs:
   list-of-action-to-release:
@@ -33,7 +34,11 @@ jobs:
             if grep -q -w $n <<< $(git tag -l); then
               echo "$n already exist"
             else
-              git tag $n
+              curl \
+                -X POST \
+                -H "Accept: application/vnd.github+json" \
+                -H "Authorization: Bearer <YOUR-TOKEN>" \
+                https://api.github.com/repos/grasdouble/github-action/releases \
+                -d '{"tag_name":"${n}","target_commitish":"develop","name":"${n}","body":"Release ${n}","draft":false,"prerelease":false,"generate_release_notes":false}'
             fi
-            git push --tag
           done <<< "$versions"
