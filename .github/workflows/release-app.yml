@@ -16,7 +16,7 @@
 #
 # On PR created by the workflow, it's recommanded to use merge action instead of squash to keep main and develop sync to keep history between both
 
-name: Gitflow - Release
+name: Release - App
 
 on:
   workflow_call:

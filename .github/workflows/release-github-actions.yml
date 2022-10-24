@@ -1,0 +1,39 @@
+name: Release - Github Actions
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  list-of-action-to-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Display info
+        run: |
+          echo "Github event ref branch  : ${{ github.event.ref }}"
+          echo "Github actor             : $GITHUB_ACTOR"
+          echo "Github branch            : ${GITHUB_REF#refs/heads/}"
+
+      - name: Fetch tags
+        run: |
+          git fetch --tag
+
+      - name: Create tags
+        run: |
+          versions=$(cat ./release.txt)
+
+          while read n; do 
+            echo "Name $n"
+            if grep -q -w $n <<< $(git tag -l); then
+              echo "$n already exist"
+            else
+              git tag $n
+            fi
+            git push --tag
+          done <<< "$versions"
