@@ -1,10 +1,9 @@
 name: Release Action
-# this is only a comment to see it in logs - 002
 
 on:
   push:
     branches:
-      - manageReleaseTag
+      - develop
 
 jobs:
   list-of-action-to-release:
@@ -26,5 +25,4 @@ jobs:
           
       - name: Run script
         run: bash ./scripts/releaseAction/script.sh ${{ github.event.before }} ${{ github.event.after }}
-        
-        #bash ./scripts/releaseAction/script.sh e994f6d09c0fcb247dc628b2aca5878d00d39d3e 14bd3be9b33ba23d0b389f58245420fb8a2c7463
+        #To test locally -> bash ./scripts/releaseAction/script.sh e994f6d09c0fcb247dc628b2aca5878d00d39d3e 14bd3be9b33ba23d0b389f58245420fb8a2c7463
