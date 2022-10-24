@@ -12,5 +12,5 @@ while read n; do
   echo "--- $n was found at line $i"
   readarray -d ".github/workflow/" -t filePath <<< "$n"
   echo "---- ${filePath}"
-  i=$(($i+1));
+  i=$(($i+1));  
 done <<< "$modifiedFiles"
