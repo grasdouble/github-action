@@ -24,8 +24,8 @@ jobs:
         run: |
 #          echo $(git diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD develop))
 #          modifiedFiles=$(git diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD develop))
-          modifiedFiles=$(curl \
+          curl \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${secrets.GITHUB_TOKEN}" \
-            https://api.github.com/repos/grasdouble/github-action/pulls/${{ github.number }}/files)
+            https://api.github.com/repos/grasdouble/github-action/pulls/${{ github.number }}/files
           echo "Git diff                 : $(echo $modifiedFiles)"
