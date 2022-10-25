@@ -21,16 +21,24 @@ jobs:
           echo "Github branch            : ${GITHUB_REF#refs/heads/}"
           echo "Github pr number         : ${{ github.event.number }}"
 
-      - name: Get Pull Request Number
-        id: pr
-        run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get list of modified list
+        uses: jitterbit/get-changed-files@v1
+        id: abc
+        with:
+          format: space-delimited
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: List of modified list
+      - name: Printing
         run: |
-          curl \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}" \
-            https://api.github.com/repos/grasdouble/github-action/pulls/${{ steps.pr.outputs.pull_request_number }}/files
-          echo "Git diff                 : $(echo $modifiedFiles)"
+          echo "All:"
+          echo "${{ steps.abc.outputs.all }}"
+          echo "Added:"
+          echo "${{ steps.abc.outputs.added }}"
+          echo "Removed:"
+          echo "${{ steps.abc.outputs.removed }}"
+          echo "Renamed:"
+          echo "${{ steps.abc.outputs.renamed }}"
+          echo "Modified:"
+          echo "${{ steps.abc.outputs.modified }}"
+          echo "Added+Modified:"
+          echo "${{ steps.abc.outputs.added_modified }}"
