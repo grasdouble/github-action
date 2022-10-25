@@ -1,4 +1,4 @@
-name: Release - Github Actions
+name: Tool - PlantUml Generator
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - develop
 
 jobs:
-  list-of-action-to-release:
+  list-of-action-to-generate-uml:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
