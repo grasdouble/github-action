@@ -23,8 +23,8 @@ jobs:
 
       - name: List of modified list
         run: |
-          modifiedFiles=$(curl \
+          curl \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}" \
-            https://api.github.com/repos/grasdouble/github-action/pulls/${{ github.event.number }}/files)
+            https://api.github.com/repos/grasdouble/github-action/pulls/${{ github.event.number }}/files
           echo "Git diff                 : $(echo $modifiedFiles)"
