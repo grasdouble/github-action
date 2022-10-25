@@ -22,7 +22,10 @@ jobs:
 
       - name: List of modified list
         run: |
-          echo $(git diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD develop))
-          modifiedFiles=$(git diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD develop))
+#          echo $(git diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD develop))
+#          modifiedFiles=$(git diff --name-only FETCH_HEAD $(git merge-base FETCH_HEAD develop))
+          modifiedFiles=$(curl \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${secrets.GITHUB_TOKEN}" \
+            https://api.github.com/repos/grasdouble/github-action/pulls/${{ github.number }}/files)
           echo "Git diff                 : $(echo $modifiedFiles)"
-#        git diff --name-only 69261a9e142c6e5d74a717df7c7a07f26f5e90ef 041e24a05fc85cc9229d592e597ba2ccabc4920a
