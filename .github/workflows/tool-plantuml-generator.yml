@@ -19,7 +19,7 @@ jobs:
           echo "Github event ref branch  : ${{ github.event.ref }}"
           echo "Github actor             : $GITHUB_ACTOR"
           echo "Github branch            : ${GITHUB_REF#refs/heads/}"
-          echo "Github pr number         : ${{ github.number }}"
+          echo "Github pr number         : ${{ github.event.number }}"
 
       - name: List of modified list
         run: |
