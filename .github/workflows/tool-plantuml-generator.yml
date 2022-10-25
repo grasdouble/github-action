@@ -22,5 +22,5 @@ jobs:
 
       - name: List of modified list
         run: |
-          echo "Git diff            : $(git diff --name-only ${{ github.before}} ${{github.after}})"
+          echo "Git diff                 : $(git diff --name-only ${{ github.event.before}} ${{github.event.after}})"
         
