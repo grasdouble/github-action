@@ -2,9 +2,8 @@ name: Release - Github Actions
 
 on:
   push:
-    branches:
+    pull_request:
       - develop
-      - add/tool-plantuml-generator
 
 jobs:
   list-of-action-to-release:
@@ -21,5 +20,7 @@ jobs:
           echo "Github actor             : $GITHUB_ACTOR"
           echo "Github branch            : ${GITHUB_REF#refs/heads/}"
 
-#      - name: List of modified list
+      - name: List of modified list
+        run: |
+          echo "Git diff            : $(git diff --name-only ${{ github.before}} ${{github.after}})"
         
