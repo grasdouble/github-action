@@ -1,0 +1,6 @@
+{
+  "name": "tool-plantuml-generator",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "MIT"
+}
