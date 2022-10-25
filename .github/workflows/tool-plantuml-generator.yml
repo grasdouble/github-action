@@ -9,7 +9,7 @@ jobs:
   list-of-action-to-generate-uml:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+    - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
@@ -19,11 +19,12 @@ jobs:
           echo "Github event ref branch  : ${{ github.event.ref }}"
           echo "Github actor             : $GITHUB_ACTOR"
           echo "Github branch            : ${GITHUB_REF#refs/heads/}"
+          echo "Github pr number         : ${{ github.number }}"
 
       - name: List of modified list
         run: |
-          curl \
+          modifiedFiles=$(curl \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}" \
-            https://api.github.com/repos/grasdouble/github-action/pulls/${{ github.number }}/files
+            https://api.github.com/repos/grasdouble/github-action/pulls/${{ github.event.number }}/files)
           echo "Git diff                 : $(echo $modifiedFiles)"
