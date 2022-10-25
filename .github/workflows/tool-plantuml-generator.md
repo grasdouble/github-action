@@ -1,3 +1,4 @@
+<html>
 <uml>밥->앨리스 : hello</uml>
 <br>
 <uml>
@@ -16,3 +17,4 @@ $("uml").each(function() {
   $(this).replaceWith($('<img>').attr('src', src));
 });
 </script>
+</html>
