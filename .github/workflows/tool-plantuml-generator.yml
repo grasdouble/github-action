@@ -22,6 +22,9 @@ jobs:
 
       - name: List of modified list
         run: |
+          echo $(git diff --name-only FETCH_HEAD ${{ github.event.after }})
+          echo $(git diff --name-only FETCH_HEAD)
+          echo $(git diff --name-only)
           modifiedFiles=$(git diff --name-only FETCH_HEAD ${{ github.event.after }})
           echo "Git diff                 : $(echo $modifiedFiles)"
 #        git diff --name-only 69261a9e142c6e5d74a717df7c7a07f26f5e90ef 041e24a05fc85cc9229d592e597ba2ccabc4920a
