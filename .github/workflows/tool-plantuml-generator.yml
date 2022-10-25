@@ -21,10 +21,16 @@ jobs:
           echo "Github branch            : ${GITHUB_REF#refs/heads/}"
           echo "Github pr number         : ${{ github.event.number }}"
 
+      - name: Get Pull Request Number
+        id: pr
+        run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: List of modified list
         run: |
           curl \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}" \
-            https://api.github.com/repos/grasdouble/github-action/pulls/${{ github.event.number }}/files
+            https://api.github.com/repos/grasdouble/github-action/pulls/${{ steps.pr.outputs.pull_request_number }}/files
           echo "Git diff                 : $(echo $modifiedFiles)"
