@@ -1,4 +1,4 @@
-check-pr-release-file_v0.1.0
+check-pr-release-file_v0.1.1
 demo-inherit-secret_v0.1.0
 release-app_v0.2.1
 release-github-actions_v0.2.0
